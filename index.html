@@ -6,6 +6,26 @@
     <title>Document</title>
     <link rel="stylesheet" href="./inndex.css">
     <script src="innndex.js"></script>
+    <style>
+        .modal {
+         display: none; /* oculto hasta abrir */
+         position: fixed;
+         left: 0; top: 0;
+         width: 100%; height: 100%;
+         background-color: rgba(161, 194, 255, 0.308);
+         z-index: 1000;
+        }
+        .modal-contenido {
+         background: rgba(253, 179, 68, 0.842);
+         margin: 5% auto;
+         padding: 20px;
+         border-radius: 10px;
+         max-width: 600px;
+         max-height: 80vh;
+         overflow-y: auto;
+        }
+        .cerrar { float: right; cursor: pointer; font-size: 24px; }
+        </style>
 </head>
 <body>
     <header> 
@@ -13,7 +33,7 @@
         <h3> "Ángel de las escuelas pías" </h3>
     </header>
 <nav>
- <a href=""> Vivencias </a>
+ <a href="Vivencias"> Vivencias </a>
  <a href=""> Trabajo </a>
  <a href=""> Experiencias </a>
 </nav>
@@ -53,13 +73,142 @@
             
             </p>
         </article>
-       <p> Presiona para jugar una trivia sobre Glicerio </p>
-        <button onclick="jugar()">Jugar</button> 
-        <div id="pregunta"></div>
-<div id="opciones"></div>
-<button id="enviar">Enviar respuesta</button>
-<div id="resultado"></div>
+
+<section id="jugar-trivia">
+<h2>¿Te animas a resolver un quiz sobre Glicerio?</h2>
+<button id="abrirTrivia">Comenzar Quiz</button>
 </section>
-</main>
+<div id="modalTrivia" class="modal">
+ <div class="modal-contenido">
+ <span class="cerrar">&times;</span>
+ <h2>Trivia sobre el Venerable Glicerio Landriani</h2>
+<form id="formTrivia">
+
+<p><strong>1.</strong> ¿Cuándo se unió al noviciado?</p>
+<label><input type="radio" name="p1" value="31 de mayo de 1612"> 31 de mayo de 1612 </label><br>
+<label><input type="radio" name="p1" value="2 de julio de 1617 ">2 de julio de 1617 </label><br>
+<label><input type="radio" name="p1" value="15 de febrero de 1618"> 15 de febrero de 1618 </label><br><br>
+
+<p><strong>2.</strong> ¿Qué le ofreció a la Virgen durante su adolescencia? </p>
+<label><input type="radio" name="p2" value="Un anillo de oro"> Un anillo de oro </label><br>
+<label><input type="radio" name="p2" value="Un manto de seda"> Un manto de seda </label><br>
+<label><input type="radio" name="p2" value="Ninguna de las anteriores"> Ninguna de las anteriores </label><br><br>
+
+<p><strong>3.</strong> ¿Qué es un dato memorable sobre los votos de Glicerio (pobreza, castidad y obediencia)?</p>
+<label><input type="radio" name="p3" value="Fue el que mejor los cumplió"> Fue el que mejor los cumplió</label><br>
+<label><input type="radio" name="p3" value="Fue el último escolapio en ordenarse durante la vida de Calasanz">Fue el último escolapio en ordenarse durante la vida de Calasanz</label><br>
+<label><input type="radio" name="p3" value="Fue el primero en profesarlos"> Fue el primero en profesarlos</label><br><br>
+
+<p><strong>4.</strong> ¿Qué estudios completó Glicerio antes de unirse al noviciado?</p>
+<label><input type="radio" name="p4" value="Teología"> Teología</label><br>
+<label><input type="radio" name="p4" value="Filosofía">Filosofía</label><br>
+<label><input type="radio" name="p4" value="Letras"> Letras</label><br><br>
+
+<p><strong>5.</strong>¿Dónde está enterrado su cuerpo?</p>
+<label><input type="radio" name="p5" value="Iglesia de S. Pedro">Iglesia de S. Pedro</label><br>
+<label><input type="radio" name="p5" value="Iglesia de S. Pantaleón">Iglesia de S. Pantaleón </label><br>
+<label><input type="radio" name="p5" value="Iglesia de S. Bartolomé de Porta Nuova"> Iglesia de S. Bartolomé de Porta Nuova </label><br><br>
+
+
+
+<button type="submit">Enviar respuestas</button>
+</form>
+<div id="resultado"></div>
+ </div>
+
+<script>
+    const modal = document.getElementById("modalTrivia");
+    const btnAbrir = document.getElementById("abrirTrivia");
+    const btnCerrar = document.querySelector(".cerrar");
+    btnAbrir.onclick = () => { modal.style.display = "block"; };
+    btnCerrar.onclick = () => { modal.style.display = "none"; };
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    document.getElementById("formTrivia").addEventListener("submit", function(e) {
+         e.preventDefault();
+         let puntaje = 0;
+         let salida = "";
+
+         let r1 = document.querySelector('input[name="p1"]:checked');
+         if (r1) {
+         if (r1.value === "2 de julio de 1617 ") {
+         puntaje++;
+         salida += "<p class='correcta'> 1. Correcta </p>";
+         } else {
+         salida += "<p class='incorrecta'>1.  Incorrecta. Correcta: 2 de julio de 1617 </p>";
+         }
+         } else {
+         salida += "<p class='incorrecta'>1.  No respondida. Correcta: 2 de julio de 1617 </p>";
+         }
+         
+         document.getElementById("resultado").innerHTML = salida;
+
+
+
+           let r2 = document.querySelector('input[name="p2"]:checked');
+         if (r2) {
+         if (r2.value === "Un anillo de oro") {
+         puntaje++;
+         salida += "<p class='correcta'> 2. Correcta</p>";
+         } else {
+         salida += "<p class='incorrecta'>2.  Incorrecta. Correcta: Un anillo de oro</p>";
+         }
+         } else {
+         salida += "<p class='incorrecta'>2.  No respondida. Correcta: Un anillo de oro</p>";
+         }
+
+        
+         document.getElementById("resultado").innerHTML = salida;
+
+
+
+           let r3 = document.querySelector('input[name="p3"]:checked');
+
+         if (r3) {
+         if (r3.value === "Fue el primero en profesarlos") {
+         puntaje++;
+         salida += "<p class='correcta'>3. Correcta</p>";
+         } else {
+         salida += "<p class='incorrecta'>3.  Incorrecta. Correcta: Fue el primero en profesarlos</p>";
+         }
+         } else {
+         salida += "<p class='incorrecta'>3.  No respondida. Correcta: Fue el primero en profesarlos</p>";
+         }
+        
+         document.getElementById("resultado").innerHTML = salida;
+
+
+ 
+           let r4 = document.querySelector('input[name="p4"]:checked');
+         if (r4) {
+         if (r4.value === "Teología") {
+         puntaje++;
+         salida += "<p class='correcta'>4.  Correcta</p>";
+         } else {
+         salida += "<p> class='incorrecta'>4.  Incorrecta. Correcta: Teología </p>";
+         }
+         } else {
+         salida += "<p class='incorrecta'>4.  No respondida. Correcta: Teología </p>";
+         }
+         
+         document.getElementById("resultado").innerHTML = salida;
+
+
+   
+           let r5 = document.querySelector('input[name="p5"]:checked');
+         if (r5) {
+         if (r5.value === "Iglesia de S. Pantaleón") {
+         puntaje++;
+         salida += "<p class='correcta'>5.  Correcta</p>";
+         } else {
+         salida += "<p class='incorrecta'>5.  Incorrecta. Correcta: Iglesia de S. Pantaleón</p>";
+         }
+         } else {
+         salida += "<p class='incorrecta'>5.  No respondida. Correcta: Iglesia de S. Pantaleón</p>";
+         }
+         salida += `<h4>Puntaje final: ${puntaje} de 5</h4>`;
+         document.getElementById("resultado").innerHTML = salida;
+         
+        });
+        </script>
 </body>
 </html>
